@@ -1,0 +1,8 @@
+<material>
+	<technique name="Techniques/Diff.xml"/>
+	<texture name="Textures/TexturesCom_Grass0153_1_seamless_S.jpg" unit="diffuse"/>
+	<parameter name="MatDiffColor" value="1.0 1.0 1.0 1"/> <!-- 0.0259427 0.142594 0.0284144 1 -->
+	<parameter name="MatSpecColor" value="0.5 0.5 0.5 50"/>
+    <parameter name="UOffset" value="16 0 0 0" />
+    <parameter name="VOffset" value="0 16 0 0" />
+</material>
