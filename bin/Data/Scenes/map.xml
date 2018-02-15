@@ -13,6 +13,7 @@
 	<attribute name="Variable Names" value="" />
 	<component type="Octree" id="1" />
 	<component type="PhysicsWorld" id="2" />
+	<component type="DebugRenderer" id="3" />
 	<node id="2">
 		<attribute name="Is Enabled" value="true" />
 		<attribute name="Name" value="Zone" />

@@ -25,6 +25,11 @@
 #include <Urho3D/UI/UI.h>
 #include <Urho3D/Engine/Console.h>
 #include <Urho3D\Graphics\Skybox.h>
+#include <Urho3D/Navigation/CrowdAgent.h>
+#include <Urho3D/Navigation/DynamicNavigationMesh.h>
+#include <Urho3D/Navigation/Navigable.h>
+#include <Urho3D/Navigation/NavigationEvents.h>
+#include <Urho3D/Navigation/Obstacle.h>
 
 #include "Character.h"
 #include "crowds.h"
@@ -73,6 +78,12 @@ private:
 	void LoadScene();
 
 	void CreateAgents();
+	
+	void CreateNavScene();
+
+	void SetPathPoint(); // temp
+
+	bool RayCast(float maxDistance, Vector3& hitPos, Drawable*& hitDrawable); // temp
 
     /// Touch utility object.
     SharedPtr<Touch> touch_;
@@ -82,4 +93,6 @@ private:
     bool firstPerson_;
 
 	crowds cr;
+
+	bool drawDebug_;
 };

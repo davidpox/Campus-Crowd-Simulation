@@ -23,6 +23,11 @@
 #include <Urho3D/Scene/LogicComponent.h>
 #include <iostream>
 #include <vector>
+#include <Urho3D/Navigation/CrowdAgent.h>
+#include <Urho3D/Navigation/DynamicNavigationMesh.h>
+#include <Urho3D/Navigation/Navigable.h>
+#include <Urho3D/Navigation/NavigationEvents.h>
+#include <Urho3D/Navigation/Obstacle.h>
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/DebugNew.h>
 
