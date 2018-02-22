@@ -27,8 +27,9 @@ void crowds::Initialise(Scene* sc, ResourceCache* rc) {
 
 		CrowdAgent* ca = newAgent->CreateComponent<CrowdAgent>();
 		ca->SetHeight(2.0f);
-		ca->SetMaxSpeed(3.0f);
-		ca->SetMaxAccel(5.0f);
+		ca->SetRadius(0.1f);
+		ca->SetMaxSpeed(Random(0.5f, 2.0f));
+		ca->SetMaxAccel(3.0f);
 
 
 

@@ -55,10 +55,10 @@ void crowdsim::CreateNavScene() {
 
 	CrowdManager* crowdManager = scene_->CreateComponent<CrowdManager>();
 	CrowdObstacleAvoidanceParams params = crowdManager->GetObstacleAvoidanceParams(0);
-	params.velBias = 0.5f;
-	params.adaptiveDivs = 7;
-	params.adaptiveRings = 3;
-	params.adaptiveDepth = 3;
+	params.velBias = 0.5f;			// 0.5
+	params.adaptiveDivs = 7;		// 7
+	params.adaptiveRings = 3;		// 3
+	params.adaptiveDepth = 3;		// 3
 	crowdManager->SetObstacleAvoidanceParams(0, params);
 }
 
@@ -66,6 +66,8 @@ void crowdsim::SubscribeToEvents()
 {
 	SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(crowdsim, HandleUpdate));
 	SubscribeToEvent(E_POSTUPDATE, URHO3D_HANDLER(crowdsim, HandlePostUpdate));
+	SubscribeToEvent(E_CROWD_AGENT_FORMATION, URHO3D_HANDLER(crowdsim, HandleFormationSuccess));
+	SubscribeToEvent(E_CROWD_AGENT_FAILURE, URHO3D_HANDLER(crowdsim, HandleFormationFailure));
 }
 
 void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
@@ -105,6 +107,46 @@ void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
 
 	if (input->GetMouseButtonPress(MOUSEB_LEFT)) {
 		SetPathPoint();
+	}
+
+	UpdateStreaming();
+}
+
+void crowdsim::UpdateStreaming() {
+	Vector3 agentPositions;
+	if (Node* agents = scene_->GetChild("AgentGroup")) {				// calculate the mean position within a formation of agents.
+		int agentCount = agents->GetNumChildren();
+		for (int i = 0; i < agentCount; i++) {
+			agentPositions += agents->GetChild(i)->GetWorldPosition();
+		}
+		agentPositions /= agentCount;
+	}
+	
+	DynamicNavigationMesh* mesh = scene_->GetComponent<DynamicNavigationMesh>();
+	IntVector2 agent_t = mesh->GetTileIndex(agentPositions);
+	IntVector2 tileCount = mesh->GetNumTiles();
+	IntVector2 beginTile = VectorMax(IntVector2::ZERO, agent_t - IntVector2::ONE * 2);
+	IntVector2 endTile = VectorMin(agent_t + IntVector2::ONE * 2, tileCount - IntVector2::ONE);
+
+	for (auto i = activeTiles.Begin(); i != activeTiles.End();) {
+		IntVector2 tile = *i;
+		if (beginTile.x_ <= tile.x_ && tile.x_ <= endTile.x_ && beginTile.y_ <= tile.y_ && tile.y_ <= endTile.y_) {
+			++i;
+		}
+		else {
+			mesh->RemoveTile(tile);
+			i = activeTiles.Erase(i);
+		}
+	}
+
+	for (int y = beginTile.y_; y <= endTile.y_; ++y) {
+		for (int x = beginTile.x_; x <= endTile.x_; ++x) {
+			IntVector2 tile(x, y);
+			if (!mesh->HasTile(tile) && tdata.Contains(tile)) {
+				activeTiles.Insert(tile);
+				mesh->AddTile(tdata[tile]);
+			}
+		}
 	}
 }
 
@@ -162,4 +204,42 @@ void crowdsim::SaveScene() {
 void crowdsim::LoadScene() {
 	File loadFile(context_, GetSubsystem<FileSystem>()->GetProgramDir() + "Data/Scenes/map.xml", FILE_READ);
 	scene_->LoadXML(loadFile);
+}
+
+void crowdsim::SaveNavigationData() {
+	DynamicNavigationMesh* mesh = scene_->GetComponent<DynamicNavigationMesh>();
+	tdata.Clear();
+	activeTiles.Clear();
+	IntVector2 tileCount = mesh->GetNumTiles();
+	for (int y = 0; y < tileCount.y_; ++y) {
+		for (int x = 0; x < tileCount.x_; ++x) {
+			IntVector2 tile = IntVector2(x, y);
+			tdata[tile] = mesh->GetTileData(tile);
+		}
+	}
+}
+
+void crowdsim::HandleFormationFailure(StringHash eventType, VariantMap& eventData) {		// if formation fails, get a position nearby that is free. 
+	using namespace CrowdAgentFailure;
+
+	Node* node = static_cast<Node*>(eventData[P_NODE].GetPtr());
+	CrowdAgentState agentState = (CrowdAgentState)eventData[P_CROWD_AGENT_STATE].GetInt();
+	if(agentState == CA_STATE_INVALID) {
+		Vector3 pos = scene_->GetComponent<DynamicNavigationMesh>()->FindNearestPoint(node->GetPosition(), Vector3(5.0f, 5.0f, 5.0f));
+		node->SetPosition(pos);
+	}
+}
+
+void crowdsim::HandleFormationSuccess(StringHash eventType, VariantMap& eventData) {		// main agent will get formation position, all others will be nearby. 
+	using namespace CrowdAgentFormation;
+
+	int agentIndex = eventData[P_INDEX].GetUInt();
+	int agentSize = eventData[P_SIZE].GetUInt();
+	Vector3 pos = eventData[P_POSITION].GetVector3();
+
+	if (agentIndex) {
+		CrowdManager* cm = static_cast<CrowdManager*>(GetEventSender());
+		CrowdAgent* agent = static_cast<CrowdAgent*>(eventData[P_CROWD_AGENT].GetPtr());
+		eventData[P_POSITION] = cm->GetRandomPointInCircle(pos, agent->GetRadius(), agent->GetQueryFilterType());
+	}
 }

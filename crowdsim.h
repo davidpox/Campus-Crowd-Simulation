@@ -72,6 +72,13 @@ private:
     /// Handle application post-update. Update camera position after character has moved.
     void HandlePostUpdate(StringHash eventType, VariantMap& eventData);
 
+	void UpdateStreaming();
+
+	void SaveNavigationData();
+
+	void HandleFormationFailure(StringHash eventType, VariantMap& eventData);
+	void HandleFormationReposition(StringHash eventType, VariantMap& eventData); // unused for now, for animation purposes if needed
+	void HandleFormationSuccess(StringHash eventType, VariantMap& eventData);
 
 	void SaveScene();
 	
@@ -93,6 +100,9 @@ private:
     bool firstPerson_;
 
 	crowds cr;
+
+	HashMap<IntVector2, PODVector<unsigned char>> tdata;
+	HashSet<IntVector2> activeTiles;
 
 	bool drawDebug_;
 };
