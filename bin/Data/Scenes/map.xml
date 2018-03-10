@@ -5,15 +5,14 @@
 	<attribute name="Smoothing Constant" value="50" />
 	<attribute name="Snap Threshold" value="5" />
 	<attribute name="Elapsed Time" value="2791.12" />
-	<attribute name="Next Replicated Node ID" value="28" />
-	<attribute name="Next Replicated Component ID" value="36" />
-	<attribute name="Next Local Node ID" value="16780448" />
-	<attribute name="Next Local Component ID" value="16780512" />
+	<attribute name="Next Replicated Node ID" value="32" />
+	<attribute name="Next Replicated Component ID" value="40" />
+	<attribute name="Next Local Node ID" value="16780452" />
+	<attribute name="Next Local Component ID" value="16780560" />
 	<attribute name="Variables" />
 	<attribute name="Variable Names" value="" />
 	<component type="Octree" id="1" />
 	<component type="PhysicsWorld" id="2" />
-	<component type="DebugRenderer" id="3" />
 	<node id="2">
 		<attribute name="Is Enabled" value="true" />
 		<attribute name="Name" value="Zone" />
@@ -811,6 +810,32 @@
 		<component type="StaticModel" id="35">
 			<attribute name="Model" value="Model;Models/Box.mdl" />
 			<attribute name="Material" value="Material;Materials/green.xml" />
+		</component>
+	</node>
+	<node id="28">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Tags" />
+		<attribute name="Position" value="21.9683 -1.40356 -7.30886" />
+		<attribute name="Rotation" value="0.707107 0 0.707107 0" />
+		<attribute name="Scale" value="0.03 0.08 0.02" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="36">
+			<attribute name="Model" value="Model;Models/AAD.mdl" />
+			<attribute name="Material" value="Material;" />
+		</component>
+	</node>
+	<node id="31">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="" />
+		<attribute name="Tags" />
+		<attribute name="Position" value="-35.2421 -1.32511 -9.11547" />
+		<attribute name="Rotation" value="0.707107 0 0.707107 0" />
+		<attribute name="Scale" value="0.13 0.13 0.13" />
+		<attribute name="Variables" />
+		<component type="StaticModel" id="39">
+			<attribute name="Model" value="Model;Models/SC.mdl" />
+			<attribute name="Material" value="Material;" />
 		</component>
 	</node>
 </scene>
