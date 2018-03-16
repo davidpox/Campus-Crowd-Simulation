@@ -5,14 +5,14 @@ crowds::crowds() {}
 crowds::~crowds() {}
 
 void crowds::Initialise(Scene* sc, ResourceCache* rc) {
-	const int numAgents = 100;
+	const int numAgents = 10;
 	std::vector<Node*> agents;
 
 	Node* AgentGroup = sc->CreateChild("AgentGroup");
 
 	for (int i = 0; i < numAgents; i++) {
 		Node* newAgent = AgentGroup->CreateChild("Agent_" + i);
-		newAgent->SetPosition(Vector3(Random(-10.0f, 10.0f), 0.0f, Random(-10.0f, 10.0f)));
+		newAgent->SetPosition(Vector3(Random(-5.0f, -25.0f), 0.0f, Random(25.0f, 45.0f)));
 		newAgent->SetScale(0.45f);
 		StaticModel* mNewAgent = newAgent->CreateComponent<StaticModel>();
 		mNewAgent->SetModel(rc->GetResource<Model>("Models/Jack.mdl"));

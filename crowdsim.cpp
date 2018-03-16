@@ -27,7 +27,7 @@ void crowdsim::CreateScene()
 	scene_ = new Scene(context_);
 	scene_->CreateComponent<Octree>();
 	scene_->CreateComponent<PhysicsWorld>();
-	//scene_->CreateComponent<DebugRenderer>();
+	scene_->CreateComponent<DebugRenderer>();
 
 	// CAMERA CREATION
 	cameraNode_ = new Node(context_);
@@ -44,7 +44,8 @@ void crowdsim::CreateAgents() {
 
 void crowdsim::CreateNavScene() {
 	DynamicNavigationMesh* _navMesh = scene_->CreateComponent<DynamicNavigationMesh>();
-	_navMesh->SetTileSize(32);
+	_navMesh->SetTileSize(2);
+	_navMesh->SetCellSize(0.3f);
 	_navMesh->SetDrawObstacles(true);
 	_navMesh->SetAgentHeight(2.0f);
 	_navMesh->SetCellHeight(0.05f);
