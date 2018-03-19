@@ -11,7 +11,7 @@ void crowds::Initialise(Scene* sc, ResourceCache* rc) {
 	Node* AgentGroup = sc->CreateChild("AgentGroup");
 
 	for (int i = 0; i < numAgents; i++) {
-		Node* newAgent = AgentGroup->CreateChild("Agent_" + i);
+		Node* newAgent = AgentGroup->CreateChild();	//"Agent_" + i
 		newAgent->SetPosition(Vector3(Random(-5.0f, -25.0f), 0.0f, Random(25.0f, 45.0f)));
 		newAgent->SetScale(0.45f);
 		StaticModel* mNewAgent = newAgent->CreateComponent<StaticModel>();
@@ -27,7 +27,7 @@ void crowds::Initialise(Scene* sc, ResourceCache* rc) {
 
 		CrowdAgent* ca = newAgent->CreateComponent<CrowdAgent>();
 		ca->SetHeight(2.0f);
-		ca->SetRadius(0.1f);
+		ca->SetRadius(0.001f);
 		ca->SetMaxSpeed(Random(0.5f, 2.0f));
 		ca->SetMaxAccel(3.0f);
 

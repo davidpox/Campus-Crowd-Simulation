@@ -45,9 +45,9 @@ void crowdsim::CreateAgents() {
 void crowdsim::CreateNavScene() {
 	DynamicNavigationMesh* _navMesh = scene_->CreateComponent<DynamicNavigationMesh>();
 	_navMesh->SetTileSize(2);
-	_navMesh->SetCellSize(0.3f);
+	_navMesh->SetCellSize(0.1f);
 	_navMesh->SetDrawObstacles(true);
-	_navMesh->SetAgentHeight(2.0f);
+	_navMesh->SetAgentHeight(0.1f);
 	_navMesh->SetCellHeight(0.05f);
 	
 	scene_->CreateComponent<Navigable>();
@@ -61,6 +61,7 @@ void crowdsim::CreateNavScene() {
 	params.adaptiveRings = 3;		// 3
 	params.adaptiveDepth = 3;		// 3
 	crowdManager->SetObstacleAvoidanceParams(0, params);
+	crowdManager->SetMaxAgentRadius(0.001f);
 }
 
 void crowdsim::SubscribeToEvents()
