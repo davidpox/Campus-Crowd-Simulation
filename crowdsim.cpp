@@ -2,7 +2,10 @@
 
 URHO3D_DEFINE_APPLICATION_MAIN(crowdsim)
 
-crowdsim::crowdsim(Context* context) : Sample(context), firstPerson_(false) {}
+crowdsim::crowdsim(Context* context) : 
+Sample(context), 
+firstPerson_(false),
+uiRoot_(GetSubsystem<UI>()->GetRoot()) {}
 
 crowdsim::~crowdsim() {}
 
@@ -14,6 +17,7 @@ void crowdsim::Start()
 	LoadScene();
 	CreateAgents();
 	CreateNavScene();
+	CreateUI();
 
 	SubscribeToEvents();
 	Sample::InitMouseMode(MM_RELATIVE);
@@ -22,7 +26,7 @@ void crowdsim::Start()
 void crowdsim::CreateScene()
 {
 	// SCENE CREATION
-	ResourceCache* cache = GetSubsystem<ResourceCache>();
+	cache = GetSubsystem<ResourceCache>();
 
 	scene_ = new Scene(context_);
 	scene_->CreateComponent<Octree>();
@@ -78,6 +82,27 @@ void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
 
 	float timeStep = eventData[P_TIMESTEP].GetFloat();
 
+	realSeconds += timeStep;
+
+	if (realSeconds >= 1.0f) {
+		mins += timeInterval;
+		if (mins >= 60.0f) {
+			hours++;
+			mins = 0.0f;
+			if (hours >= 24.0f) {
+				hours = 0.0f;
+			}
+		}
+		String h = (String)((int)hours);
+		if (hours < 10) {h = "0" + h; }
+		String m = (String)((int)mins);
+		if (mins < 10) { m = "0" + m; }
+
+		worldClockText->SetText(h + ":" + m);
+
+		realSeconds = 0.0f;
+	}
+
 	if (GetSubsystem<UI>()->GetFocusElement()) return;
 
 	Input* input = GetSubsystem<Input>();
@@ -106,7 +131,16 @@ void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
 	else if (input->GetKeyPress(KEY_P)) {
 		drawDebug_ = !drawDebug_;
 	}
-
+	else if (input->GetKeyPress(KEY_KP_PLUS)) {
+		if (timeInterval < 10.0f) {
+			timeInterval += 1.0f;
+		}
+	}
+	else if (input->GetKeyPress(KEY_KP_MINUS)) {
+		if (timeInterval > 1.0f) {
+			timeInterval -= 1.0f;
+		}
+	}
 	if (input->GetMouseButtonPress(MOUSEB_LEFT)) {
 		SetPathPoint();
 	}
@@ -244,4 +278,19 @@ void crowdsim::HandleFormationSuccess(StringHash eventType, VariantMap& eventDat
 		CrowdAgent* agent = static_cast<CrowdAgent*>(eventData[P_CROWD_AGENT].GetPtr());
 		eventData[P_POSITION] = cm->GetRandomPointInCircle(pos, agent->GetRadius(), agent->GetQueryFilterType());
 	}
+}
+
+void crowdsim::CreateUI() {
+	UI* ui = GetSubsystem<UI>();
+	Graphics* graphics = GetSubsystem<Graphics>();
+	Font* font = cache->GetResource<Font>("Fonts/Roboto-Thin.ttf");
+	float winWidth = (float)graphics->GetWidth();
+	float winHeight = (float)graphics->GetHeight();
+
+	worldClockText = uiRoot_->CreateChild<Text>();
+	worldClockText->SetName("WORLDCLOCKTEXT");
+	worldClockText->SetText("00:00");
+	worldClockText->SetFont(font, 20);
+	worldClockText->SetColor(Color::BLACK);
+	worldClockText->SetPosition((winWidth / 2) - (worldClockText->GetWidth() / 2), 20);
 }

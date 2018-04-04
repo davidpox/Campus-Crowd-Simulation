@@ -63,6 +63,12 @@ public:
     /// Setup after engine initialization and before running the main loop.
     virtual void Start();
 
+	float realSeconds = 0.0f;
+	float hours = 0.0f;
+	float mins = 0.0f;
+	float timeInterval = 1.0f;
+	Text* worldClockText;
+
 private:
     /// Create static scene content.
     void CreateScene();
@@ -93,8 +99,11 @@ private:
 
 	bool RayCast(float maxDistance, Vector3& hitPos, Drawable*& hitDrawable); // temp
 
+	void CreateUI();
+
     /// Touch utility object.
     SharedPtr<Touch> touch_;
+	SharedPtr<UIElement> uiRoot_;
     /// The controllable character component.
     WeakPtr<Character> character_;
     /// First person camera flag.
@@ -104,6 +113,8 @@ private:
 
 	HashMap<IntVector2, PODVector<unsigned char>> tdata;
 	HashSet<IntVector2> activeTiles;
+
+	ResourceCache* cache;
 
 	bool drawDebug_;
 };
