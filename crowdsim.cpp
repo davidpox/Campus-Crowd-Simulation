@@ -9,6 +9,8 @@ uiRoot_(GetSubsystem<UI>()->GetRoot()) {}
 
 crowdsim::~crowdsim() {}
 
+PODVector<Node*> buildingdoors;
+
 void crowdsim::Start()
 {
     Sample::Start();
@@ -19,6 +21,11 @@ void crowdsim::Start()
 	CreateNavScene();
 	CreateUI();
 
+	Node* doorContainer = scene_->GetChild("entrances", true);
+	doorContainer->GetChildren(buildingdoors, true);
+	for (int i = 0; i < buildingdoors.Size(); i++) {
+		PrintLine("Found door " + buildingdoors[i]->GetName());
+	}
 	SubscribeToEvents();
 	Sample::InitMouseMode(MM_RELATIVE);
 }

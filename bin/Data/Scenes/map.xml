@@ -5,10 +5,10 @@
 	<attribute name="Smoothing Constant" value="50" />
 	<attribute name="Snap Threshold" value="5" />
 	<attribute name="Elapsed Time" value="5119.71" />
-	<attribute name="Next Replicated Node ID" value="110" />
+	<attribute name="Next Replicated Node ID" value="119" />
 	<attribute name="Next Replicated Component ID" value="184" />
-	<attribute name="Next Local Node ID" value="16780464" />
-	<attribute name="Next Local Component ID" value="16780668" />
+	<attribute name="Next Local Node ID" value="16780466" />
+	<attribute name="Next Local Component ID" value="16780692" />
 	<attribute name="Variables" />
 	<attribute name="Variable Names" value="" />
 	<component type="Octree" id="1" />
@@ -1033,5 +1033,86 @@
 			<attribute name="Bounding Box Max" value="35 3.6 17" />
 			<attribute name="Area ID" value="128" />
 		</component>
+	</node>
+	<node id="110">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="entrances" />
+		<attribute name="Tags" />
+		<attribute name="Position" value="-17.914 36.6094 -18.5871" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<node id="111">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="SC 1" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="0 -37.6195 4.62948" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="112">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="SC 2" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-28.2609 -37.6195 4.62948" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="113">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="AAD 2" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="46.6359 -37.6195 6.56564" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="114">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="INB 1" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="49.6606 -37.6195 -26.2539" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="115">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="AAD 1" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="31.2881 -37.6195 3.60562" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="116">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="MB 1" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="45.4518 -37.6195 44.3699" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="117">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="MHT 1" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-12.7163 -37.8231 48.0174" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="118">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="MB 2" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="15.1049 -37.8231 44.3699" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
 	</node>
 </scene>
