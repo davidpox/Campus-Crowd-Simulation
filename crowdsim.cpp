@@ -10,6 +10,9 @@ uiRoot_(GetSubsystem<UI>()->GetRoot()) {}
 crowdsim::~crowdsim() {}
 
 PODVector<Node*> buildingdoors;
+//PODVector<Node*> agents;
+PODVector<Node*> AgentGroups;
+bool updatePath = true;
 
 void crowdsim::Start()
 {
@@ -26,6 +29,12 @@ void crowdsim::Start()
 	for (int i = 0; i < buildingdoors.Size(); i++) {
 		PrintLine("Found door " + buildingdoors[i]->GetName());
 	}
+	scene_->GetChildrenWithTag(AgentGroups, "AgentGroup", true);
+	for (int j = 0; j < AgentGroups.Size(); j++) {
+		Node* agentGroup = AgentGroups[j];
+		PrintLine("Found agent " + agentGroup->GetName());
+	}
+
 	SubscribeToEvents();
 	Sample::InitMouseMode(MM_RELATIVE);
 }
@@ -91,22 +100,36 @@ void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
 
 	realSeconds += timeStep;
 
-	if (realSeconds >= 1.0f) {
-		mins += timeInterval;
-		if (mins >= 60.0f) {
-			hours++;
-			mins = 0.0f;
-			if (hours >= 24.0f) {
-				hours = 0.0f;
+	if (realSeconds >= 1.0f) {		// once per second
+		seconds += timeInterval;
+		if (seconds >= 60.0f) {
+			mins++;
+			seconds = 0.0f;
+			if (mins >= 60.0f) {
+				hours++;
+				if (hours >= 24.0f) {
+					hours = 0.0f;
+				}
+				mins = 0.0f;
 			}
 		}
 		String h = (String)((int)hours);
 		if (hours < 10) {h = "0" + h; }
 		String m = (String)((int)mins);
 		if (mins < 10) { m = "0" + m; }
+		String s = (String)((int)seconds);
+		if (seconds < 10) { s = "0" + s; }
 
-		worldClockText->SetText(h + ":" + m);
+		worldClockText->SetText(h + ":" + m + ":" + s);
 
+
+		if (mins == 0.0f && updatePath == true) {
+			for (int i = 0; i < AgentGroups.Size(); i++) {
+				int loc = Random(0, buildingdoors.Size());
+				SetPathPoint(i, buildingdoors[loc]->GetWorldPosition());
+			}
+			updatePath = false;
+		}
 		realSeconds = 0.0f;
 	}
 
@@ -139,7 +162,7 @@ void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
 		drawDebug_ = !drawDebug_;
 	}
 	else if (input->GetKeyPress(KEY_KP_PLUS)) {
-		if (timeInterval < 10.0f) {
+		if (timeInterval < 60.0f) {
 			timeInterval += 1.0f;
 		}
 	}
@@ -156,11 +179,11 @@ void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
 }
 
 void crowdsim::UpdateStreaming() {
-	Vector3 agentPositions;
-	if (Node* agents = scene_->GetChild("AgentGroup")) {				// calculate the mean position within a formation of agents.
-		int agentCount = agents->GetNumChildren();
+	Vector3 agentPositions;				// calculate the mean position within a formation of agents.
+	for (int x = 0; x < AgentGroups.Size(); x++) {
+		int agentCount = AgentGroups[x]->GetNumChildren();
 		for (int i = 0; i < agentCount; i++) {
-			agentPositions += agents->GetChild(i)->GetWorldPosition();
+			agentPositions += AgentGroups[x]->GetChild(i)->GetWorldPosition();
 		}
 		agentPositions /= agentCount;
 	}
@@ -197,8 +220,6 @@ bool crowdsim::RayCast(float maxDistance, Vector3& hitPos, Drawable*& hitDrawabl
 	hitDrawable = 0;
 	UI* ui = GetSubsystem<UI>();
 	IntVector2 pos = ui->GetCursorPosition();
-	
-	//if (!ui->GetCursor()->IsVisible() || ui->GetElementAt(pos, true)) return false;
 
 	Graphics* graphics = GetSubsystem<Graphics>();
 	Camera* camera = cameraNode_->GetComponent<Camera>();
@@ -221,19 +242,22 @@ void crowdsim::SetPathPoint() {
 	Drawable* hitDrawable; 
 
 	if (RayCast(1000.0f, hitPos, hitDrawable)) {
-
-		std::cout << "Setting Path Point to:\t x:" << hitPos.x_ << "\ty: " << hitPos.y_ << "\tz: " << hitPos.z_ << std::endl;
-
 		DynamicNavigationMesh* navMesh = scene_->GetComponent<DynamicNavigationMesh>();
 		Vector3 pathPos = navMesh->FindNearestPoint(hitPos, Vector3(1.0f, 1.0f, 1.0f));
-		Node* AgentGroup = scene_->GetChild("AgentGroup");
-		scene_->GetComponent<CrowdManager>()->SetCrowdTarget(pathPos, AgentGroup);
+		for (int i = 0; i < AgentGroups.Size(); i++) {
+			scene_->GetComponent<CrowdManager>()->SetCrowdTarget(pathPos, AgentGroups[i]);
+		}
 	}
+}
+
+void crowdsim::SetPathPoint(int agentGroupIndex, Vector3 pos) {
+	DynamicNavigationMesh* navMesh = scene_->GetComponent<DynamicNavigationMesh>();
+	Vector3 pathPos = navMesh->FindNearestPoint(pos, Vector3(5.0f, 5.0f, 5.0f));
+	scene_->GetComponent<CrowdManager>()->SetCrowdTarget(pathPos, AgentGroups[agentGroupIndex]);
 }
 
 void crowdsim::HandlePostUpdate(StringHash eventType, VariantMap& eventData) {
 	if (drawDebug_) {
-		//DebugRenderer* dRenderer = scene_->GetComponent<DebugRenderer>();
 		scene_->GetComponent<DynamicNavigationMesh>()->DrawDebugGeometry(true);
 		scene_->GetComponent<PhysicsWorld>()->DrawDebugGeometry(true);
 	}
@@ -264,6 +288,7 @@ void crowdsim::SaveNavigationData() {
 
 void crowdsim::HandleFormationFailure(StringHash eventType, VariantMap& eventData) {		// if formation fails, get a position nearby that is free. 
 	using namespace CrowdAgentFailure;
+	//std::cout << "Formation Failure!" << std::endl;
 
 	Node* node = static_cast<Node*>(eventData[P_NODE].GetPtr());
 	CrowdAgentState agentState = (CrowdAgentState)eventData[P_CROWD_AGENT_STATE].GetInt();

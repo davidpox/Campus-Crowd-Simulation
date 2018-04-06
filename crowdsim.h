@@ -66,6 +66,7 @@ public:
 	float realSeconds = 0.0f;
 	float hours = 0.0f;
 	float mins = 0.0f;
+	float seconds = 0.0f;
 	float timeInterval = 1.0f;
 	Text* worldClockText;
 
@@ -96,6 +97,8 @@ private:
 	void CreateNavScene();
 
 	void SetPathPoint(); // temp
+
+	void SetPathPoint(int agentGroupIndex, Vector3 pos);
 
 	bool RayCast(float maxDistance, Vector3& hitPos, Drawable*& hitDrawable); // temp
 

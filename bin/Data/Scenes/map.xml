@@ -6,9 +6,9 @@
 	<attribute name="Snap Threshold" value="5" />
 	<attribute name="Elapsed Time" value="5119.71" />
 	<attribute name="Next Replicated Node ID" value="119" />
-	<attribute name="Next Replicated Component ID" value="184" />
-	<attribute name="Next Local Node ID" value="16780466" />
-	<attribute name="Next Local Component ID" value="16780692" />
+	<attribute name="Next Replicated Component ID" value="185" />
+	<attribute name="Next Local Node ID" value="16780467" />
+	<attribute name="Next Local Component ID" value="16780704" />
 	<attribute name="Variables" />
 	<attribute name="Variable Names" value="" />
 	<component type="Octree" id="1" />
@@ -774,6 +774,10 @@
 			<attribute name="Material" value="Material;Materials/green.xml" />
 			<attribute name="Is Occluder" value="true" />
 		</component>
+		<component type="NavArea" id="184">
+			<attribute name="Bounding Box Min" value="64 -10 -20" />
+			<attribute name="Bounding Box Max" value="-64 4 20" />
+		</component>
 	</node>
 	<node id="44">
 		<attribute name="Is Enabled" value="true" />
@@ -833,19 +837,6 @@
 			<component type="NavArea" id="180">
 				<attribute name="Bounding Box Min" value="-26 -10 -1.6" />
 				<attribute name="Bounding Box Max" value="26 10 1.6" />
-			</component>
-		</node>
-		<node id="109">
-			<attribute name="Is Enabled" value="true" />
-			<attribute name="Name" value="BARRIER 5" />
-			<attribute name="Tags" />
-			<attribute name="Position" value="5.05482 40.23 49.6343" />
-			<attribute name="Rotation" value="1 0 0 0" />
-			<attribute name="Scale" value="1 1 1" />
-			<attribute name="Variables" />
-			<component type="NavArea" id="183">
-				<attribute name="Bounding Box Min" value="-64 -10 -16" />
-				<attribute name="Bounding Box Max" value="64 10 17" />
 			</component>
 		</node>
 	</node>
@@ -1029,9 +1020,8 @@
 			<attribute name="Is Occluder" value="true" />
 		</component>
 		<component type="NavArea" id="182">
-			<attribute name="Bounding Box Min" value="-35 -3.5 -16" />
-			<attribute name="Bounding Box Max" value="35 3.6 17" />
-			<attribute name="Area ID" value="128" />
+			<attribute name="Bounding Box Min" value="-37 -3.5 -18" />
+			<attribute name="Bounding Box Max" value="36 3.6 18" />
 		</component>
 	</node>
 	<node id="110">
