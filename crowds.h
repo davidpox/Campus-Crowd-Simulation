@@ -39,4 +39,6 @@ public:
     ~crowds();
 
     virtual void Initialise(Scene* sc, ResourceCache* rc);
+	Vector3 getSpawnPosition();
+
 };

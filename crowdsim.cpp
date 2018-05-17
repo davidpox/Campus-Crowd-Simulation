@@ -49,6 +49,13 @@ void crowdsim::CreateScene()
 	scene_->CreateComponent<PhysicsWorld>();
 	scene_->CreateComponent<DebugRenderer>();
 
+	ui = GetSubsystem<UI>();
+	graphics = GetSubsystem<Graphics>();
+	font = cache->GetResource<Font>("Fonts/Roboto-Thin.ttf");
+	winWidth = (float)graphics->GetWidth();
+	winHeight = (float)graphics->GetHeight();
+
+
 	// CAMERA CREATION
 	cameraNode_ = new Node(context_);
 	Camera* camera = cameraNode_->CreateComponent<Camera>();
@@ -60,6 +67,9 @@ void crowdsim::CreateScene()
 void crowdsim::CreateAgents() {
 	ResourceCache* cache = GetSubsystem<ResourceCache>();
 	cr.Initialise(scene_, cache);
+
+	m_grid = std::make_unique<Grid>(winWidth, winHeight, CELL_SIZE);
+	
 }
 
 void crowdsim::CreateNavScene() {
@@ -78,8 +88,8 @@ void crowdsim::CreateNavScene() {
 	CrowdObstacleAvoidanceParams params = crowdManager->GetObstacleAvoidanceParams(0);
 	params.velBias = 0.5f;			// 0.5
 	params.adaptiveDivs = 7;		// 7
-	params.adaptiveRings = 3;		// 3
-	params.adaptiveDepth = 3;		// 3
+	params.adaptiveRings = 2;		// 3
+	params.adaptiveDepth = 5;		// 3
 	crowdManager->SetObstacleAvoidanceParams(0, params);
 	crowdManager->SetMaxAgentRadius(0.001f);
 }
@@ -101,10 +111,10 @@ void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
 	realSeconds += timeStep;
 
 	if (realSeconds >= 1.0f) {		// once per second
-		seconds += timeInterval;
+		seconds += (timeInterval + timeStepModifier);
 		if (seconds >= 60.0f) {
 			mins++;
-			seconds = 0.0f;
+			if ((int)mins % 10 == 0) updatePath = true;
 			if (mins >= 60.0f) {
 				hours++;
 				if (hours >= 24.0f) {
@@ -112,8 +122,9 @@ void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
 				}
 				mins = 0.0f;
 			}
+			seconds = 0.0f;
 		}
-		String h = (String)((int)hours);
+		String h = (String)((int)hours);		// padding to add 0's if time unit is below 10. e.g. 9:10 AM becomes 09:10AM
 		if (hours < 10) {h = "0" + h; }
 		String m = (String)((int)mins);
 		if (mins < 10) { m = "0" + m; }
@@ -123,10 +134,11 @@ void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
 		worldClockText->SetText(h + ":" + m + ":" + s);
 
 
-		if (mins == 0.0f && updatePath == true) {
+		if (updatePath) {
+			std::cout << "Generating new path!" << std::endl;
 			for (int i = 0; i < AgentGroups.Size(); i++) {
 				int loc = Random(0, buildingdoors.Size());
-				SetPathPoint(i, buildingdoors[loc]->GetWorldPosition());
+				SetPathPoint(i, buildingdoors[loc]->GetWorldPosition());	// attempt at getting a new, random path. 
 			}
 			updatePath = false;
 		}
@@ -151,7 +163,8 @@ void crowdsim::HandleUpdate(StringHash eventType, VariantMap& eventData)
 	if (input->GetKeyDown(KEY_S)) cameraNode_->Translate(Vector3::BACK * MOVE_SPEED * timeStep);
 	if (input->GetKeyDown(KEY_A)) cameraNode_->Translate(Vector3::LEFT * MOVE_SPEED * timeStep);
 	if (input->GetKeyDown(KEY_D)) cameraNode_->Translate(Vector3::RIGHT * MOVE_SPEED * timeStep);
-	
+
+
 	if (input->GetKeyPress(KEY_KP_7)) {
 		SaveScene();
 	} 
@@ -313,12 +326,6 @@ void crowdsim::HandleFormationSuccess(StringHash eventType, VariantMap& eventDat
 }
 
 void crowdsim::CreateUI() {
-	UI* ui = GetSubsystem<UI>();
-	Graphics* graphics = GetSubsystem<Graphics>();
-	Font* font = cache->GetResource<Font>("Fonts/Roboto-Thin.ttf");
-	float winWidth = (float)graphics->GetWidth();
-	float winHeight = (float)graphics->GetHeight();
-
 	worldClockText = uiRoot_->CreateChild<Text>();
 	worldClockText->SetName("WORLDCLOCKTEXT");
 	worldClockText->SetText("00:00");

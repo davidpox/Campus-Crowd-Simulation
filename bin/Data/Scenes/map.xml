@@ -5,10 +5,10 @@
 	<attribute name="Smoothing Constant" value="50" />
 	<attribute name="Snap Threshold" value="5" />
 	<attribute name="Elapsed Time" value="5119.71" />
-	<attribute name="Next Replicated Node ID" value="119" />
+	<attribute name="Next Replicated Node ID" value="124" />
 	<attribute name="Next Replicated Component ID" value="185" />
-	<attribute name="Next Local Node ID" value="16780467" />
-	<attribute name="Next Local Component ID" value="16780704" />
+	<attribute name="Next Local Node ID" value="16780469" />
+	<attribute name="Next Local Component ID" value="16780728" />
 	<attribute name="Variables" />
 	<attribute name="Variable Names" value="" />
 	<component type="Octree" id="1" />
@@ -860,7 +860,6 @@
 				<attribute name="Model" value="Model;Models/INB.mdl" />
 				<attribute name="Material" value="Material;" />
 				<attribute name="Is Occluder" value="true" />
-				<attribute name="Cast Shadows" value="true" />
 			</component>
 		</node>
 		<node id="12">
@@ -875,7 +874,6 @@
 				<attribute name="Model" value="Model;Models/MB.mdl" />
 				<attribute name="Material" value="Material;" />
 				<attribute name="Is Occluder" value="true" />
-				<attribute name="Cast Shadows" value="true" />
 			</component>
 		</node>
 		<node id="18">
@@ -890,7 +888,6 @@
 				<attribute name="Model" value="Model;Models/MHT.mdl" />
 				<attribute name="Material" value="Material;" />
 				<attribute name="Is Occluder" value="true" />
-				<attribute name="Cast Shadows" value="true" />
 			</component>
 		</node>
 		<node id="28">
@@ -905,7 +902,6 @@
 				<attribute name="Model" value="Model;Models/AAD.mdl" />
 				<attribute name="Material" value="Material;" />
 				<attribute name="Is Occluder" value="true" />
-				<attribute name="Cast Shadows" value="true" />
 			</component>
 		</node>
 		<node id="31">
@@ -920,7 +916,6 @@
 				<attribute name="Model" value="Model;Models/SC.mdl" />
 				<attribute name="Material" value="Material;" />
 				<attribute name="Is Occluder" value="true" />
-				<attribute name="Cast Shadows" value="true" />
 			</component>
 		</node>
 		<node id="33">
@@ -935,7 +930,6 @@
 				<attribute name="Model" value="Model;Models/Art Bridge.mdl" />
 				<attribute name="Material" value="Material;" />
 				<attribute name="Is Occluder" value="true" />
-				<attribute name="Cast Shadows" value="true" />
 			</component>
 		</node>
 		<node id="35">
@@ -950,7 +944,6 @@
 				<attribute name="Model" value="Model;Models/Art Bridge.mdl" />
 				<attribute name="Material" value="Material;" />
 				<attribute name="Is Occluder" value="true" />
-				<attribute name="Cast Shadows" value="true" />
 			</component>
 		</node>
 		<node id="98">
@@ -1100,6 +1093,51 @@
 			<attribute name="Name" value="MB 2" />
 			<attribute name="Tags" />
 			<attribute name="Position" value="15.1049 -37.8231 44.3699" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="119">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="EXIT1" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="80.768 -37.6195 1.34328" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="120">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="EXIT2" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-46.1982 -37.6195 6.0052" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="121">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="EXIT3" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-46.1982 -37.6195 52.153" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="122">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="EXIT4" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="79.9565 -37.6195 51.7001" />
+			<attribute name="Rotation" value="1 0 0 0" />
+			<attribute name="Scale" value="1 1 1" />
+			<attribute name="Variables" />
+		</node>
+		<node id="123">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="EXIT5" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="44.2808 -37.6195 -44.0758" />
 			<attribute name="Rotation" value="1 0 0 0" />
 			<attribute name="Scale" value="1 1 1" />
 			<attribute name="Variables" />

@@ -35,9 +35,11 @@
 #include "Character.h"
 #include "crowds.h"
 #include "Touch.h"
+#include "Grid.h"
 
 #include <Urho3D/DebugNew.h>
 #include "Sample.h"
+#include <memory>
 
 namespace Urho3D
 {
@@ -49,6 +51,8 @@ class Scene;
 
 class Character;
 class Touch;
+
+const int CELL_SIZE = 128;
 
 class crowdsim : public Sample
 {
@@ -114,10 +118,19 @@ private:
 
 	crowds cr;
 
+	std::unique_ptr<Grid> m_grid;
+
 	HashMap<IntVector2, PODVector<unsigned char>> tdata;
 	HashSet<IntVector2> activeTiles;
 
 	ResourceCache* cache;
+	UI* ui;
+	Graphics* graphics;
+	Font* font;
+	float winWidth;
+	float winHeight;
+
+	int timeStepModifier = 0.0f;
 
 	bool drawDebug_;
 };
